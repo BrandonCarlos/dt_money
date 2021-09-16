@@ -1,8 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createServer } from 'miragejs';//mirajs ajuda a criar API FAKE
+import { App } from './App';//Temos que IMPORTAR de FATO = { App }
+
+createServer({
+  routes() {
+    this.namespace = 'api';//irá capturar todas as CHAMADAS que tem /api/
+    this.get('/transactions', () => {//mesma coisa -> /api/transactions
+      return [
+        {//vamos devolver um VETOR
+          id: 1,
+          title: 'Transaction 1',
+          amount: 400,
+          type: 'amount',
+          category: 'Food',
+          createdAt: new Date()
+        }
+      ]
+    });
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,8 +27,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
